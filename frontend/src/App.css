@@ -1,38 +1,348 @@
-.App {
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap');
+
+:root {
+  --green-light: #f0f7e6;
+  --green-mid: #c8e6a0;
+  --green-accent: #7dc142;
+  --green-dark: #4a8a1e;
+  --chip-selected-bg: #7dc142;
+  --chip-selected-text: #fff;
+  --chip-default-bg: #e8f5d4;
+  --chip-default-text: #4a8a1e;
+  --card-bg: #ffffff;
+  --card-border: #d4eab0;
+  --card-source-border: #7dc142;
+  --card-source-bg: #f4fbe8;
+  --shadow-soft: 0 4px 16px rgba(100, 160, 60, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f2f8e8;
+  background-image: radial-gradient(circle at 20% 20%, #e8f5d0 0%, transparent 50%),
+                    radial-gradient(circle at 80% 80%, #dff0c8 0%, transparent 50%);
+  font-family: 'Nunito', sans-serif;
+  margin: 0;
+  min-height: 100vh;
+}
+
+/* ── Layout ── */
+.app-container {
+  padding: 32px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ── Logo ── */
+.app-logo {
+  display: block;
+  margin: 0 auto;
+  width: 280px;
+}
+
+/* ── Search ── */
+.search-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.search-input {
+  padding: 12px 20px;
+  border-radius: 32px;
+  border: 2px solid var(--green-mid);
+  font-size: 15px;
+  font-family: 'Nunito', sans-serif;
+  width: 320px;
+  outline: none;
+  background: #fff;
+  transition: border-color 0.2s;
+  color: #333;
+}
+
+.search-input:focus {
+  border-color: var(--green-accent);
+}
+
+/* ── Dropdown ── */
+.dropdown-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.dropdown-list {
+  border: 2px solid var(--green-mid);
+  border-radius: 16px;
+  width: 320px;
+  max-height: 220px;
+  overflow-y: auto;
+  background: #fff;
+  box-shadow: var(--shadow-soft);
+}
+
+.dropdown-empty {
+  padding: 14px;
+  color: #999;
+  margin: 0;
+  font-size: 14px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.dropdown-item {
+  padding: 11px 18px;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f7e6;
+  font-size: 14px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  color: #444;
+  transition: background 0.15s;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.dropdown-item:last-child {
+  border-bottom: none;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.dropdown-item:hover {
+  background: var(--green-light);
+  color: var(--green-dark);
+}
+
+/* ── Selected Pokemon section ── */
+.selected-section {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-panel {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 14px;
+  background: #fff;
+  border: 2px solid var(--green-mid);
+  border-radius: 20px;
+  padding: 20px 24px;
+  box-shadow: var(--shadow-soft);
+  min-width: 200px;
 }
 
-.App-link {
-  color: #61dafb;
+.habitat-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #444;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.habitat-label input[type="checkbox"] {
+  accent-color: var(--green-accent);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.clear-button {
+  padding: 8px 16px;
+  border-radius: 24px;
+  border: 2px solid var(--green-mid);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  background: #fff;
+  color: var(--green-dark);
+  transition: all 0.15s;
+}
+
+.clear-button:hover {
+  background: var(--green-light);
+}
+
+.filter-hint {
+  font-size: 13px;
+  color: #888;
+  max-width: 180px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── Results ── */
+.results-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 22px;
+  color: var(--green-dark);
+  font-weight: 400;
+}
+
+.results-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+/* ── Pokemon Card (source) ── */
+.pokemon-card {
+  border-radius: 20px;
+  padding: 20px 16px;
+  width: 220px;
+  box-shadow: var(--shadow-soft);
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  transition: transform 0.15s;
+}
+
+.pokemon-card:hover {
+  transform: translateY(-2px);
+}
+
+.pokemon-card.source {
+  border: 2px solid var(--card-source-border);
+  background: var(--card-source-bg);
+}
+
+.pokemon-card-sprite {
+  display: block;
+  margin: 0 auto 4px;
+}
+
+.pokemon-card-name {
+  text-align: center;
+  margin: 8px 0 10px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 18px;
+  color: #333;
+  font-weight: 400;
+}
+
+.pokemon-card-info {
+  margin: 5px 0;
+  font-size: 13px;
+  color: #555;
+}
+
+.favorites-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #444;
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 6px;
+}
+
+.favorites-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.favorite-chip {
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'Nunito', sans-serif;
+  border: none;
+  background: var(--chip-default-bg);
+  color: var(--chip-default-text);
+  user-select: none;
+  transition: all 0.15s;
+}
+
+.favorite-chip.selected {
+  background: var(--chip-selected-bg);
+  color: var(--chip-selected-text);
+}
+
+.favorite-chip.clickable {
+  cursor: pointer;
+}
+
+.favorite-chip.clickable:hover {
+  background: var(--green-mid);
+  color: var(--green-dark);
+}
+
+.favorite-chip.clickable.selected:hover {
+  background: var(--green-dark);
+  color: #fff;
+}
+
+/* ── Compatible Card ── */
+.compatible-card {
+  border: 2px solid var(--card-border);
+  border-radius: 20px;
+  padding: 16px 14px;
+  width: 200px;
+  background: var(--card-bg);
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.15s;
+}
+
+.compatible-card:hover {
+  transform: translateY(-2px);
+}
+
+.compatible-card-sprite {
+  display: block;
+  margin: 0 auto 4px;
+}
+
+.compatible-card-name {
+  text-align: center;
+  margin: 6px 0 8px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 16px;
+  color: #333;
+  font-weight: 400;
+}
+
+.compatible-card-info {
+  margin: 4px 0;
+  font-size: 12px;
+  color: #555;
+}
+
+.compatible-favorites-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #444;
+  display: block;
+  margin-top: 8px;
+  margin-bottom: 5px;
+}
+
+.compatible-favorites-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.compatible-favorite-chip {
+  padding: 3px 8px;
+  border-radius: 14px;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: 'Nunito', sans-serif;
+  background: var(--chip-default-bg);
+  color: var(--chip-default-text);
+  border: none;
+}
+
+.compatible-favorite-chip.matched {
+  background: var(--chip-selected-bg);
+  color: var(--chip-selected-text);
 }

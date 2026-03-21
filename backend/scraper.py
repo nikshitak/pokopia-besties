@@ -169,7 +169,7 @@ def run_scraper():
             failed.append(name)
         
         # Be polite to Serebii's server - wait 1 second between requests
-        time.sleep(1)
+        time.sleep(0.5)
 
     print(f"\nDone! {success} Pokémon saved successfully.")
     if failed:
