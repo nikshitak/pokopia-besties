@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import time
 from database import get_connection
 
-# Full list of pokemon from Serebii's Pokopia pokedex
+# Full list of pokemon from pokopia
 POKEMON_NAMES = [
     "bulbasaur", "ivysaur", "venusaur", "charmander", "charmeleon", "charizard",
     "squirtle", "wartortle", "blastoise", "pidgey", "pidgeotto", "pidgeot",
@@ -167,8 +167,8 @@ def run_scraper():
             success += 1
         else:
             failed.append(name)
-        
-        # Be polite to Serebii's server - wait 1 second between requests
+
+        # wait time between requests        
         time.sleep(0.5)
 
     print(f"\nDone! {success} Pokémon saved successfully.")

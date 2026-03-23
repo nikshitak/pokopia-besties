@@ -2,13 +2,20 @@ from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from database import get_connection
 from typing import Optional
+import os
 
 app = FastAPI()
+
+cors_origins = os.getenv(
+    "CORS_ORIGINS",
+    "http://localhost:3000,http://127.0.0.1:3000"
+)
+allow_origins = [origin.strip() for origin in cors_origins.split(",") if origin.strip()]
 
 # Allow React frontend to talk to this backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # update this when you deploy to Vercel
+    allow_origins=allow_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
