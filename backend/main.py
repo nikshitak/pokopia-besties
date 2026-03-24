@@ -8,7 +8,12 @@ app = FastAPI()
 # Allow React frontend to talk to this backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173"],  # update this when you deploy to Vercel
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "https://pokopia-besties.vercel.app",
+        "https://pokopia-besties-3iuobyxga-nikshita-kurvas-projects.vercel.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
