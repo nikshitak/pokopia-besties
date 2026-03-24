@@ -3,3 +3,5 @@ fastapi==0.135.1
 requests==2.32.4
 uvicorn==0.42.0
 mysql-connector-python==9.6.0
+python-dotenv
+python-multipart
