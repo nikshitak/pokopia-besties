@@ -13,6 +13,12 @@ DB_CONFIG = {
     "port": int(os.getenv("DB_PORT", 3306))
 }
 
+# Debug logging
+print(f"DB_HOST: {DB_CONFIG['host']}")
+print(f"DB_USER: {DB_CONFIG['user']}")
+print(f"DB_NAME: {DB_CONFIG['database']}")
+print(f"DB_PORT: {DB_CONFIG['port']}")
+
 def get_connection():
     '''
     Creates connection to mysql database
@@ -22,6 +28,7 @@ def get_connection():
         return conn
     except Error as e:
         print(f"Error connecting to MySQL: {e}")
+        print(f"DB Config: host={DB_CONFIG['host']}, user={DB_CONFIG['user']}, database={DB_CONFIG['database']}, port={DB_CONFIG['port']}")
         return None
 
 def setup_database():
