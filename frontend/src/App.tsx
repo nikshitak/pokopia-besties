@@ -171,6 +171,11 @@ export default function App() {
     <div className="app-container">
       <img src={logo} alt="Pokopia Besties" className="app-logo" />
 
+      <p>Welcome to Pokopia Besties!
+
+        Credits to <a href="https://pixelframe.design/pokopia-font-logo-generator/" target="_blank" rel="noopener noreferrer">PixelFrame</a> for the logo, <a href="https://www.serebii.net/pokemonpokopia/" target="_blank" rel="noopener noreferrer">Serebii</a> for the information about each pokemon, and <a href="https://pokemondb.net/">PokemonDB</a> for the sprites. Serebii and PokemonDB have been my favorite websites to go to for in-game guides and pokédex info since I was a kid, and hopefully y'all enjoy them as well!</p>
+    
+
       <div className="search-wrapper">
         <input
           type="text"

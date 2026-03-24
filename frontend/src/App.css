@@ -47,7 +47,8 @@ body {
 .search-wrapper {
   display: flex;
   justify-content: center;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  margin-top: 12px;
 }
 
 .search-input {
