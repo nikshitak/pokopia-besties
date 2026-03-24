@@ -3,7 +3,8 @@ from bs4 import BeautifulSoup
 import time
 from database import get_connection
 
-# Full list of pokemon from pokopia
+# Full list of pokemon from Serebii's Pokopia pokedex
+# might need to find a way to automate this but for now this is fine
 POKEMON_NAMES = [
     "bulbasaur", "ivysaur", "venusaur", "charmander", "charmeleon", "charizard",
     "squirtle", "wartortle", "blastoise", "pidgey", "pidgeotto", "pidgeot",
@@ -11,11 +12,12 @@ POKEMON_NAMES = [
     "venonat", "venomoth", "bellsprout", "weepinbell", "victreebel", "slowpoke",
     "slowbro", "slowking", "magnemite", "magneton", "magnezone", "onix",
     "steelix", "cubone", "marowak", "tyrogue", "hitmonlee", "hitmonchan",
-    "hitmontop", "koffing", "weezing", "tangela", "professortangrowth", "tangrowth", "scyther",
+    "hitmontop", "koffing", "weezing", "tangela", "tangrowth", "scyther",
     "scizor", "pinsir", "magikarp", "gyarados", "ditto", "hoothoot",
     "noctowl", "heracross", "volbeat", "illumise", "gulpin", "swalot",
-    "cacnea", "cacturne", "combee", "vespiquen", "shellos", "shelloseastsea", "gastrodon",
-    "gastrodoneastsea", "drifloon", "drifblim", "drilbur", "excadrill", "timburr", "gurdurr",
+    "cacnea", "cacturne", "combee", "vespiquen", 
+    "shellos", "gastrodon", "shelloseastsea", "gastrodoneastsea",
+    "drifloon", "drifblim", "drilbur", "excadrill", "timburr", "gurdurr",
     "conkeldurr", "litwick", "lampent", "chandelure", "axew", "fraxure",
     "haxorus", "goomy", "sliggoo", "goodra", "cramorant", "pichu", "peakychu",
     "pikachu", "raichu", "zubat", "golbat", "crobat", "meowth",
@@ -35,7 +37,7 @@ POKEMON_NAMES = [
     "graveler", "golem", "magby", "magmar", "magmortar", "bonsly",
     "sudowoodo", "murkrow", "honchkrow", "larvitar", "pupitar", "tyranitar",
     "lotad", "lombre", "ludicolo", "mawile", "torkoal", "kricketot",
-    "kricketune", "chatot", "riolu", "lucario", "stereorotom", "larvesta", "volcarona",
+    "kricketune", "chatot", "riolu", "lucario", "larvesta", "volcarona",
     "rowlet", "dartrix", "decidueye", "scorbunny", "raboot", "cinderace",
     "skwovet", "greedent", "rolycoly", "carkol", "coalossal", "toxel",
     "toxtricityampedform", "toxtricitylowkeyform", "fidough", "dachsbun", "charcadet", "armarouge", "ceruledge",
@@ -55,8 +57,7 @@ POKEMON_NAMES = [
     "eevee", "vaporeon", "jolteon", "flareon", "espeon", "umbreon",
     "leafeon", "glaceon", "sylveon", "kyogre", "raikou", "entei",
     "suicune", "volcanion", "articuno", "zapdos", "moltres", "lugia",
-    "ho-oh", "mewtwo", "mew"
-       
+    "ho-oh", "mewtwo", "mew", "hoppip", "skiploom", "jumpluff"
 ]
 
 def scrape_pokemon(name):
@@ -81,7 +82,7 @@ def scrape_pokemon(name):
         data_row = rows[2]
         cells = data_row.find_all("td")
 
-        # Specialty links are in cell 0
+        # speciality stays in the same place at the beginning
         specialty_links = cells[0].find_all("a")
         specialties = [a.get_text(strip=True) for a in specialty_links if a.get_text(strip=True)]
 
@@ -107,7 +108,7 @@ def scrape_pokemon(name):
     except Exception as e:
         print(f"Error scraping {name}: {e}")
         return None
-    
+
 def save_pokemon(data):
     conn = get_connection()
     if not conn:
@@ -167,15 +168,14 @@ def run_scraper():
             success += 1
         else:
             failed.append(name)
-
-        # wait time between requests        
-        time.sleep(0.5)
+        
+        # Be polite to Serebii's server - wait 1 second between requests
+        # time.sleep(1)
 
     print(f"\nDone! {success} Pokémon saved successfully.")
     if failed:
         print(f"Failed: {failed}")
 
 if __name__ == "__main__":
-    
-    print(len(POKEMON_NAMES))
     run_scraper()
+    # print(len(POKEMON_NAMES))

@@ -1,6 +1,5 @@
 import mysql.connector
 from mysql.connector import Error
-
 from dotenv import load_dotenv
 import os
 
@@ -10,11 +9,13 @@ DB_CONFIG = {
     "host": os.getenv("DB_HOST"),
     "user": os.getenv("DB_USER"),
     "password": os.getenv("DB_PASSWORD"),
-    "database": os.getenv("DB_NAME"),
-    "port": int(os.getenv("DB_PORT", 3306))
+    "database": os.getenv("DB_NAME")
 }
 
 def get_connection():
+    '''
+    Creates connection to mysql database
+    '''
     try:
         conn = mysql.connector.connect(**DB_CONFIG)
         return conn

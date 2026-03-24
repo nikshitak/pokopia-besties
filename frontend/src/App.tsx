@@ -1,18 +1,31 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import logo from "./logo.png";
+import logo from "/src/assets/logo.png";
 
-const API_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
+const API_URL = "http://127.0.0.1:8000";
 
-function formatName(name) {
+interface Pokemon {
+  id: number;
+  name: string;
+  ideal_habitat: string | null;
+  specialties: string[];
+  favorites: string[];
+}
+
+interface PokemonListItem {
+  id: number;
+  name: string;
+}
+
+function formatName(name: string): string {
   return name
     .split("-")
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }
 
-function getSpriteUrl(name) {
-  const specialCases = {
+function getSpriteUrl(name: string): string {
+  const specialCases: Record<string, string> = {
     "farfetchd": "farfetch-d",
     "mrmime": "mr-mime",
     "mimejr": "mime-jr",
@@ -23,7 +36,14 @@ function getSpriteUrl(name) {
   return `https://img.pokemondb.net/sprites/home/normal/${imgName}.png`;
 }
 
-function PokemonCard({ pokemon, selectedFavorites, onFavoriteClick, isSource }) {
+interface PokemonCardProps {
+  pokemon: Pokemon;
+  selectedFavorites: string[];
+  onFavoriteClick?: (fav: string) => void;
+  isSource: boolean;
+}
+
+function PokemonCard({ pokemon, selectedFavorites, onFavoriteClick, isSource }: PokemonCardProps) {
   return (
     <div className={`pokemon-card ${isSource ? "source" : ""}`}>
       <img
@@ -31,7 +51,7 @@ function PokemonCard({ pokemon, selectedFavorites, onFavoriteClick, isSource }) 
         alt={formatName(pokemon.name)}
         width={96}
         height={96}
-        onError={e => e.target.src = "https://img.pokemondb.net/sprites/scarlet-violet/normal/substitute.png"}
+        onError={e => (e.target as HTMLImageElement).src = "https://img.pokemondb.net/sprites/scarlet-violet/normal/substitute.png"}
         className="pokemon-card-sprite"
       />
       <h3 className="pokemon-card-name">{formatName(pokemon.name)}</h3>
@@ -58,7 +78,12 @@ function PokemonCard({ pokemon, selectedFavorites, onFavoriteClick, isSource }) 
   );
 }
 
-function CompatibleCard({ pokemon, selectedFavorites }) {
+interface CompatibleCardProps {
+  pokemon: Pokemon;
+  selectedFavorites: string[];
+}
+
+function CompatibleCard({ pokemon, selectedFavorites }: CompatibleCardProps) {
   return (
     <div className="compatible-card">
       <img
@@ -66,7 +91,7 @@ function CompatibleCard({ pokemon, selectedFavorites }) {
         alt={formatName(pokemon.name)}
         width={80}
         height={80}
-        onError={e => e.target.src = "https://img.pokemondb.net/sprites/scarlet-violet/normal/substitute.png"}
+        onError={e => (e.target as HTMLImageElement).src = "https://img.pokemondb.net/sprites/scarlet-violet/normal/substitute.png"}
         className="compatible-card-sprite"
       />
       <h4 className="compatible-card-name">{formatName(pokemon.name)}</h4>
@@ -93,25 +118,25 @@ function CompatibleCard({ pokemon, selectedFavorites }) {
 }
 
 export default function App() {
-  const [allPokemon, setAllPokemon] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedPokemon, setSelectedPokemon] = useState(null);
-  const [selectedFavorites, setSelectedFavorites] = useState([]);
-  const [matchHabitat, setMatchHabitat] = useState(false);
-  const [compatiblePokemon, setCompatiblePokemon] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [allPokemon, setAllPokemon] = useState<PokemonListItem[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
+  const [selectedFavorites, setSelectedFavorites] = useState<string[]>([]);
+  const [matchHabitat, setMatchHabitat] = useState<boolean>(false);
+  const [compatiblePokemon, setCompatiblePokemon] = useState<Pokemon[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     fetch(`${API_URL}/pokemon`)
       .then(res => res.json())
-      .then(data => setAllPokemon(data));
+      .then(data => setAllPokemon(Array.isArray(data) ? data : []));
   }, []);
 
   useEffect(() => {
     if (!selectedPokemon) return;
     setLoading(true);
     const params = new URLSearchParams();
-    params.set("match_habitat", matchHabitat);
+    params.set("match_habitat", String(matchHabitat));
     if (selectedFavorites.length > 0) {
       params.set("selected_favorites", selectedFavorites.join(","));
     }
@@ -123,7 +148,7 @@ export default function App() {
       });
   }, [selectedPokemon, selectedFavorites, matchHabitat]);
 
-  function handleSelectPokemon(name) {
+  function handleSelectPokemon(name: string): void {
     setSelectedFavorites([]);
     setMatchHabitat(false);
     setCompatiblePokemon([]);
@@ -132,7 +157,7 @@ export default function App() {
       .then(data => setSelectedPokemon(data));
   }
 
-  function handleFavoriteClick(fav) {
+  function handleFavoriteClick(fav: string): void {
     setSelectedFavorites(prev =>
       prev.includes(fav) ? prev.filter(f => f !== fav) : [...prev, fav]
     );

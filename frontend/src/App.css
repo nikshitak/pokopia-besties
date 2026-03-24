@@ -39,7 +39,7 @@ body {
 /* ── Logo ── */
 .app-logo {
   display: block;
-  margin: 0 auto;
+  margin: 0 auto 32px;
   width: 280px;
 }
 
@@ -47,7 +47,7 @@ body {
 .search-wrapper {
   display: flex;
   justify-content: center;
-  margin-bottom: 15px;
+  margin-bottom: 8px;
 }
 
 .search-input {
