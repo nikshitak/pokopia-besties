@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import logo from "/src/assets/logo.png";
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "pokopia-production.up.railway.app";
 
 interface Pokemon {
   id: number;
